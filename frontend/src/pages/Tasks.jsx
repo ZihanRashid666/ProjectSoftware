@@ -1,19 +1,16 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import CalendarMini from '../components/CalendarMini';
 
 const Tasks = () => {
   const { user, logout } = useAuth();
-
   const navigate = useNavigate();
 
   const [recipient, setRecipient] = useState('');
-
   const [amount, setAmount] = useState('');
   const [depositAmount, setDepositAmount] = useState('');
-
   const [balance, setBalance] = useState(0);
-
   const [transactions, setTransactions] = useState([
     '✅ Sent $200 to Alice',
     '✅ Received $500 from Bob',
@@ -21,10 +18,8 @@ const Tasks = () => {
   ]);
 
   const [transferError, setTransferError] = useState('');
-
   const [depositError, setDepositError] = useState('');
 
-  
   const initials = useMemo(() => {
     const n = (user?.name || 'Zihan Rashid').trim();
     return n
@@ -42,6 +37,7 @@ const Tasks = () => {
     }
   };
 
+  // Auto-clear errors
   useEffect(() => {
     if (transferError) {
       const timer = setTimeout(() => setTransferError(''), 3000);
@@ -79,9 +75,16 @@ const Tasks = () => {
     setDepositAmount('');
   };
 
+  // --- Example calendar events (you can generate these from backend later) ---
+  const calendarEvents = [
+    { date: '2025-08-20', label: '🏠 Rent due: $300' },
+    { date: '2025-08-22', label: '📶 Internet bill: $60' },
+    { date: '2025-08-25', label: '🎯 Savings auto-transfer: $100' },
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50">
- 
+      {/* Header */}
       <header className="border-b bg-white/80 backdrop-blur sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -94,7 +97,6 @@ const Tasks = () => {
             </div>
           </div>
 
-          
           <button
             onClick={handleLogout}
             className="rounded-lg bg-rose-600 text-white px-4 py-2 font-medium shadow hover:bg-rose-700 active:scale-[.98] transition"
@@ -106,9 +108,9 @@ const Tasks = () => {
       </header>
 
       <div className="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-        
+        {/* MAIN */}
         <main className="md:col-span-2 space-y-6">
-         
+          {/* Balance */}
           <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 text-white p-6 shadow-lg">
             <div className="absolute -right-16 -top-16 size-40 rounded-full bg-white/10 blur-2xl" />
             <h2 className="text-sm/6 uppercase tracking-wider text-white/80">Account Balance</h2>
@@ -116,7 +118,7 @@ const Tasks = () => {
             <p className="mt-1 text-white/70 text-sm">Live update • Secure</p>
           </section>
 
-         
+          {/* Profile card */}
           <section className="rounded-2xl bg-white p-5 shadow-sm border border-slate-200">
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-4">
@@ -128,14 +130,12 @@ const Tasks = () => {
                   <p className="text-slate-500 text-sm">{user?.email || 'zihan.rashid@connect.qut.edu.au'}</p>
                 </div>
               </div>
-
-             
             </div>
           </section>
 
-          
+          {/* Transfer & Deposit */}
           <div className="grid md:grid-cols-2 gap-6">
-          
+            {/* Transfer */}
             <section className="rounded-2xl bg-white p-5 shadow-sm border border-slate-200">
               <h3 className="text-lg font-semibold mb-3">💸 Fund Transfer</h3>
               {transferError && (
@@ -175,7 +175,7 @@ const Tasks = () => {
               </form>
             </section>
 
-            
+            {/* Deposit */}
             <section className="rounded-2xl bg-white p-5 shadow-sm border border-slate-200">
               <h3 className="text-lg font-semibold mb-3">💵 Deposit Money</h3>
               {depositError && (
@@ -186,8 +186,14 @@ const Tasks = () => {
               <form onSubmit={handleDeposit} className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Amount</label>
-                <input
-                    type="number" placeholder="0.00" value={depositAmount} onChange={(e) => setDepositAmount(e.target.value)} step="0.01" min="0" className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
+                  <input
+                    type="number"
+                    placeholder="0.00"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    step="0.01"
+                    min="0"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
                 <button
@@ -200,7 +206,7 @@ const Tasks = () => {
             </section>
           </div>
 
-         
+          {/* Transactions */}
           <section className="rounded-2xl bg-white p-5 shadow-sm border border-slate-200">
             <h3 className="text-lg font-semibold mb-3">📜 Transaction History</h3>
             {transactions.length === 0 ? (
@@ -220,8 +226,9 @@ const Tasks = () => {
           </section>
         </main>
 
-        
+        {/* SIDEBAR */}
         <aside className="space-y-6">
+          {/* Welcome */}
           <section className="rounded-2xl bg-white p-5 shadow-sm border border-slate-200">
             <h3 className="font-semibold text-slate-800 mb-2">Welcome to MyBank Online</h3>
             <p className="text-slate-600 text-sm">
@@ -237,12 +244,16 @@ const Tasks = () => {
             </ul>
           </section>
 
-          <section className="rounded-2xl bg-gradient-to-br from-amber-100 via-amber-50 to-white p-5 border border-amber-200">
-            <h4 className="font-semibold text-amber-900">Tip</h4>
-            <p className="text-amber-800 text-sm mt-1">
-              Keep your balance healthy—try setting a monthly deposit goal and track it here.
-            </p>
-          </section>
+          {/* Mini Calendar */}
+          <CalendarMini
+            title=""
+            events={calendarEvents}
+            initialDate={new Date()}
+            onSelectDate={(d) => {
+              // example: if user clicks a date in the future, you could prefill deposit/transfer or show a toast
+              // console.log("Selected date:", d);
+            }}
+          />
         </aside>
       </div>
     </div>

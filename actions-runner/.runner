@@ -1,0 +1,11 @@
+﻿{
+  "agentId": 2,
+  "agentName": "DESKTOP-096CFE1",
+  "poolId": 1,
+  "poolName": "Default",
+  "serverUrl": "https://pipelinesghubeus15.actions.githubusercontent.com/s2jqYB8tYM3nxlfXsE7WilFTcs0VhKZ1kVIm6yx56uCYfejuEq/",
+  "gitHubUrl": "https://github.com/ZihanRashid666/ProjectSoftware",
+  "workFolder": "_work",
+  "useV2Flow": true,
+  "serverUrlV2": "https://broker.actions.githubusercontent.com/"
+}

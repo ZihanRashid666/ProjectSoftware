@@ -1,17 +1,15 @@
-// config/db.js
-const mongoose = require("mongoose");
+// backend/config/db.js
+const mongoose = require('mongoose');
 
-// Set strictQuery explicitly to suppress the warning
-//mongoose.set('strictQuery', true);
-
-const connectDB = async () => {
+module.exports = async function connectDB() {
   try {
-    await mongoose.connect(process.env.MONGO_URI);  // Remove deprecated options
-    console.log("MongoDB connected successfully");
-  } catch (error) {
-    console.error("MongoDB connection error:", error.message);
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Mongo connected');
+  } catch (err) {
+    console.error('Mongo connect error:', err.message);
     process.exit(1);
   }
 };
-
-module.exports = connectDB;

@@ -4,9 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 
-dotenv.config(); // loads ./backend/.env by default
-
-mongoose.set('strictQuery', true); // silence deprecation note
+mongoose.set('strictQuery', true);
 
 const app = express();
 
@@ -17,17 +15,20 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 // app.use('/api/tasks', require('./routes/taskRoutes'));
 
-// Only start HTTP server when run directly (not in tests)
 if (require.main === module) {
-  // ensure MONGO_URI exists
   if (!process.env.MONGO_URI) {
     console.error('ERROR: MONGO_URI is missing in backend/.env');
     process.exit(1);
   }
-  connectDB(); // should use process.env.MONGO_URI internally
+  connectDB();
 
   const PORT = process.env.PORT || 5001;
-  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  app.listen(5001, "0.0.0.0", () => console.log("Server running on port 5001"));
 }
 
 module.exports = app;
+
+
+
+
+
